@@ -90,7 +90,7 @@ h1 {
     display: flex;
   }
   
-  .second-row {
+  .second-row, .fourth-row {
     margin: 0.5rem 0;
   }
   
@@ -108,6 +108,8 @@ h1 {
    bottom: 1rem;
    left: 50%;
    text-align: center;
+   width: 50%;
+
 }
 .btn{
     background: none;
@@ -116,13 +118,13 @@ h1 {
     text-transform: uppercase;
     padding: 12px 20px;
     min-width: 200px;
-    margin: 10px;
+    margin: 0 90px;
     cursor: pointer;
     transition: color 0.4s linear;
     position: relative;
 }
 .btn:hover{
-    color: #fff;
+    color: #ffffff;
 }
 .btn::before{
     content: "";
