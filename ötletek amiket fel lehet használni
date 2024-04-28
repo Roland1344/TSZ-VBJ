@@ -1,349 +1,600 @@
+HTML:
+
 <!DOCTYPE html>
-<html lang="hu">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#121213" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+  <title>Wordle Clone</title>
+</head>
+<body>
+  <div class="alert-container" data-alert-container></div>
+  <div data-guess-grid class="guess-grid">
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
 
-    <!-- HTML Meta Tags -->
-    <title>Wordle</title>
 
-    <link rel="stylesheet" href=".style.css" />
-  </head>
-  <body>
-    <h1 class="title">Wordle <span class="title-word-clone">clone</span></h1>
-    <div id="game"></div>
-    <hr />
-    <p class="footer">
-      Made for fun in ~30 minutes
-      <span class="v-separator">|</span>
-      <span>
-        <a
-          class="social-media-link"
-          href="https://github.com/DoubleDebug/wordle-speedrun"
-          title="Github"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
-            <path
-              d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"
-            />
-          </svg>
-        </a>
-      </span>
-      <span>
-        <a
-          class="social-media-link"
-          href="https://www.youtube.com/watch?v=oKM2nQdQkIU"
-          title="YouTube"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-            <path
-              d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"
-            />
-          </svg>
-        </a>
-      </span>
-      <span>
-        <a
-          class="social-media-link"
-          href="https://twitter.com/YoutubeDoubleD"
-          title="Twitter"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path
-              d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"
-            />
-          </svg>
-        </a>
-      </span>
-    </p>
-    <script defer src="./src/index.js" type="module"></script>
-  </body>
+
+  </div>
+  <div data-keyboard class="keyboard">
+    <button class="key" data-key="Q">Q</button>
+    <button class="key" data-key="W">W</button>
+    <button class="key" data-key="E">E</button>
+    <button class="key" data-key="R">R</button>
+    <button class="key" data-key="T">T</button>
+    <button class="key" data-key="Y">Y</button>
+    <button class="key" data-key="U">U</button>
+    <button class="key" data-key="I">I</button>
+    <button class="key" data-key="O">O</button>
+    <button class="key" data-key="P">P</button>
+    <div class="space"></div>
+    <button class="key" data-key="A">A</button>
+    <button class="key" data-key="S">S</button>
+    <button class="key" data-key="D">D</button>
+    <button class="key" data-key="F">F</button>
+    <button class="key" data-key="G">G</button>
+    <button class="key" data-key="H">H</button>
+    <button class="key" data-key="J">J</button>
+    <button class="key" data-key="K">K</button>
+    <button class="key" data-key="L">L</button>
+    <div class="space"></div>
+    <button data-enter class="key large">Enter</button>
+    <button class="key" data-key="Z">Z</button>
+    <button class="key" data-key="X">X</button>
+    <button class="key" data-key="C">C</button>
+    <button class="key" data-key="V">V</button>
+    <button class="key" data-key="B">B</button>
+    <button class="key" data-key="N">N</button>
+    <button class="key" data-key="M">M</button>
+    <button data-delete class="key large">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path>
+      </svg>
+    </button>
+  </div>
+</body>
 </html>
 
 
-html,
-body {
-  background: var(--default);
-}
 
-:root {
-  --default: #121213;
-  --empty: #3a3a3c;
-  --wrong: #b59f3b;
-  --right: #538d4e;
-}
-
-#game {
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  margin-top: 5rem;
-  width: 100%;
-  height: 72vh;
-}
-
-.grid {
-  display: grid;
-  grid-template-rows: repeat(6, auto);
-  grid-template-columns: repeat(5, auto);
-}
-
-.box {
-  width: 60px;
-  height: 60px;
-  border: 2px solid var(--empty);
-  margin: 4px;
-  color: white;
-  text-transform: uppercase;
-  display: grid;
-  place-items: center;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 2.4rem;
-}
-
-.box.empty {
-  background: var(--empty);
-}
-
-.box.wrong {
-  background: var(--wrong);
-}
-
-.box.right {
-  background: var(--right);
-}
-
-.animated {
-  animation: flip 0.5s ease;
-}
-
-@keyframes flip {
-  0% {
-    transform: scaleY(1);
+CSS:
+*, *::after, *::before {
+    box-sizing: border-box;
+    font-family: Arial;
   }
-  50% {
-    transform: scaleY(0);
+  
+  body {
+    background-color: hsl(240, 3%, 7%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1em;
+    font-size: clamp(.5rem, 2.5vmin, 1.5rem);
   }
-  100% {
-    transform: scaleY(1);
+  
+  .keyboard {
+    display: grid;
+    grid-template-columns: repeat(20, minmax(auto, 1.25em));
+    grid-auto-rows: 3em;
+    gap: .25em;
+    justify-content: center;
   }
-}
-
-.title {
-  color: white;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 3rem;
-  margin-bottom: 0;
-  position: relative;
-}
-
-.title-word-clone {
-  position: absolute;
-  left: calc(50% + 75px);
-  transform: rotate(25deg);
-  color: yellow;
-  font-size: 1.2rem;
-}
-
-hr {
-  border-style: solid;
-  border-color: var(--empty);
-  border-width: 1px;
-}
-
-.footer {
-  display: flex;
-  justify-content: center;
-  color: white;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.v-separator {
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
-.social-media-link {
-  display: flex;
-  fill: white;
-  width: 25px;
-  height: 25px;
-  margin-right: 0.75rem;
-}
-
-import {mainDictionary} from './dictionary.js';
-
-// for testing purposes, make sure to use the test dictionary
-console.log(mainDictionary);
-
-const dictionary = mainDictionary;
-const state = {
-  secret: dictionary[Math.floor(Math.random() * dictionary.length)],
-  grid: Array(6)
-    .fill()
-    .map(() => Array(5).fill('')),
-  currentRow: 0,
-  currentCol: 0,
-};
-
-function drawGrid(container) {
-  const grid = document.createElement('div');
-  grid.className = 'grid';
-
-  for (let i = 0; i < 6; i++) {
-    for (let j = 0; j < 5; j++) {
-      drawBox(grid, i, j);
-    }
-  }
-
-  container.appendChild(grid);
-}
-
-function updateGrid() {
-  for (let i = 0; i < state.grid.length; i++) {
-    for (let j = 0; j < state.grid[i].length; j++) {
-      const box = document.getElementById(`box${i}${j}`);
-      box.textContent = state.grid[i][j];
-    }
-  }
-}
-
-function drawBox(container, row, col, letter = '') {
-  const box = document.createElement('div');
-  box.className = 'box';
-  box.textContent = letter;
-  box.id = `box${row}${col}`;
-
-  container.appendChild(box);
-  return box;
-}
-
-function registerKeyboardEvents() {
-  document.body.onkeydown = (e) => {
-    const key = e.key;
-    if (key === 'Enter') {
-      if (state.currentCol === 5) {
-        const word = getCurrentWord();
-        if (isWordValid(word)) {
-          revealWord(word);
-          state.currentRow++;
-          state.currentCol = 0;
-        } else {
-          alert('Not a valid word.');
-        }
-      }
-    }
-    if (key === 'Backspace') {
-      removeLetter();
-    }
-    if (isLetter(key)) {
-      addLetter(key);
-    }
-
-    updateGrid();
-  };
-}
-
-function getCurrentWord() {
-  return state.grid[state.currentRow].reduce((prev, curr) => prev + curr);
-}
-
-function isWordValid(word) {
-  return dictionary.includes(word);
-}
-
-function getNumOfOccurrencesInWord(word, letter) {
-  let result = 0;
-  for (let i = 0; i < word.length; i++) {
-    if (word[i] === letter) {
-      result++;
-    }
-  }
-  return result;
-}
-
-function getPositionOfOccurrence(word, letter, position) {
-  let result = 0;
-  for (let i = 0; i <= position; i++) {
-    if (word[i] === letter) {
-      result++;
-    }
-  }
-  return result;
-}
-
-function revealWord(guess) {
-  const row = state.currentRow;
-  const animation_duration = 500; // ms
-
-  for (let i = 0; i < 5; i++) {
-    const box = document.getElementById(`box${row}${i}`);
-    const letter = box.textContent;
-    const numOfOccurrencesSecret = getNumOfOccurrencesInWord(
-      state.secret,
-      letter
+  
+  .key {
+    font-size: inherit;
+    grid-column: span 2;
+    border: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(
+      var(--hue, 200),
+      var(--saturation, 1%),
+      calc(var(--lightness-offset, 0%) + var(--lightness, 51%))
     );
-    const numOfOccurrencesGuess = getNumOfOccurrencesInWord(guess, letter);
-    const letterPosition = getPositionOfOccurrence(guess, letter, i);
-
-    setTimeout(() => {
-      if (
-        numOfOccurrencesGuess > numOfOccurrencesSecret &&
-        letterPosition > numOfOccurrencesSecret
-      ) {
-        box.classList.add('empty');
-      } else {
-        if (letter === state.secret[i]) {
-          box.classList.add('right');
-        } else if (state.secret.includes(letter)) {
-          box.classList.add('wrong');
-        } else {
-          box.classList.add('empty');
-        }
-      }
-    }, ((i + 1) * animation_duration) / 2);
-
-    box.classList.add('animated');
-    box.style.animationDelay = `${(i * animation_duration) / 2}ms`;
+    color: white;
+    fill: white;
+    text-transform: uppercase;
+    border-radius: .25em;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .key.large {
+    grid-column: span 3;
+  }
+  
+  .key > svg {
+    width: 1.75em;
+    height: 1.75em;
+  }
+  
+  .key:hover, .key:focus {
+    --lightness-offset: 10%;
+  }
+  
+  .key.wrong {
+    --lightness: 23%;
+  }
+  
+  .key.wrong-location {
+    --hue: 49;
+    --saturation: 51%;
+    --lightness: 47%;
+  }
+  
+  .key.correct {
+    --hue: 115;
+    --saturation: 29%;
+    --lightness: 43%;
+  }
+  
+  .guess-grid {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    flex-grow: 1;
+    grid-template-columns: repeat(3, 4em);
+    grid-template-rows: repeat(6, 4em);
+    gap: .25em;
+    margin-bottom: 1em;
+  }
+  
+  .tile {
+    font-size: 2em;
+    color: white;
+    border: .05em solid hsl(240, 2%, 23%);
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    transition: transform 250ms linear;
+  }
+  
+  .tile[data-state="active"] {
+    border-color: hsl(200, 1%, 34%);
+  }
+  
+  .tile[data-state="wrong"] {
+    border: none;
+    background-color: hsl(240, 2%, 23%);
+  }
+  
+  .tile[data-state="wrong-location"] {
+    border: none;
+    background-color: hsl(49, 51%, 47%);
+  }
+  
+  .tile[data-state="correct"] {
+    border: none;
+    background-color: hsl(115, 29%, 43%);
+  }
+  
+  .tile.shake {
+    animation: shake 250ms ease-in-out;
+  }
+  
+  .tile.dance {
+    animation: dance 500ms ease-in-out;
+  }
+  
+  .tile.flip {
+    transform: rotateX(90deg);
+  }
+  
+  @keyframes shake {
+    10% {
+      transform: translateX(-5%);
+    }
+  
+    30% {
+      transform: translateX(5%);
+    }
+  
+    50% {
+      transform: translateX(-7.5%);
+    }
+  
+    70% {
+      transform: translateX(7.5%);
+    }
+  
+    90% {
+      transform: translateX(-5%);
+    }
+  
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes dance {
+    20% {
+      transform: translateY(-50%);
+    }  
+  
+    40% {
+      transform: translateY(5%);
+    }  
+  
+    60% {
+      transform: translateY(-25%);
+    }  
+  
+    80% {
+      transform: translateY(2.5%);
+    }  
+  
+    90% {
+      transform: translateY(-5%);
+    }  
+  
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .alert-container {
+    position: fixed;
+    top: 10vh;
+    left: 50vw;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .alert {
+    pointer-events: none;
+    background-color: hsl(204, 7%, 85%);
+    padding: .75em;
+    border-radius: .25em;
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+    margin-bottom: .5em;
+  }
+  
+  .alert:last-child {
+    margin-bottom: 0;
+  }
+  
+  .alert.hide {
+    opacity: 0;
   }
 
-  const isWinner = state.secret === guess;
-  const isGameOver = state.currentRow === 5;
+JS:
+const targetWords = [
+    "kés",
+    "fék",
+    "kém",
+    "rém",
+    "ács",
+    "add",
+    "adj",
+    "adó",
+    "ága",
+    "ágú",
+    "agy",
+    "ágy",
+    "aha",
+    "ajk",
+    "aki",
+    "alá",
+    "áld",
+    "áll",
+    "ami",
+    "apa",
+    "apó",
+    "apu",
+    "ára",
+    "arc",
+    "árt",
+    "áru",
+    "ásó",
+    "ász",
+    "azt",
+    "bab",
+    "báb",
+    "baj",
+    "báj",
+    "bak",
+    "bal",
+    "bál",
+    "bár",
+    "bél",
+    "övé",
+    "óvó",
+    "pác",
+    "pad",
+    "pál",
+    "pap",
+    "pár",
+    "pék",
+    "pép",
+    "per",
+    "pia",
+    "pók",
+    "por",
+    "pót",
+    "póz",
+    "púp",
+    "rab",
+    "rág",
+    "raj",
+    "rak",
+    "rák",
+    "rám",
+    "ráz",
+    "rég",
+    "rém",
+    "rés",
+    "rét",
+    "rév",
+    "réz",
+    "rím",
+    "rög",
+    "rom",
+    "rúd",
+    "rúg",
+    "sál",
+    "sáp",
+    "sár",
+    "sas",
+    "sav",
+    "seb",
+    "séf",
+    "sín",
+    "síp",
+    "sír",
+    "sok",
+    "sör",
+    "sós",
+    "sóz",
+    "súg",
+    "sül",
+    "sün",
+    "süt",
+    "szó",
+    "sző",
+    "szú",
+    "tag",
+    "tág",
+    "táj",
+    "tál",
+    "tea",
+    "tej",
+    "tél",
+    "tép",
+    "tér",
+    "tét",
+    "tíz",
+    "tok",
+    "tök",
+    "tol",
+    "töm",
+    "tor",
+    "tör",
+    "tőr",
+    "tót",
+    "tré",
+    "tsz",
+]
+const WORD_LENGTH = 3;
+const FLIP_ANIMATION_DURATION = 500;
+const DANCE_ANIMATION_DURATION = 500;
+const keyboard = document.querySelector("[data-keyboard]");
+const alertContainer = document.querySelector("[data-alert-container]");
+const guessGrid = document.querySelector("[data-guess-grid]");
+const offsetFromDate = new Date(2022, 0, 1);
+const msOffset = Date.now() - offsetFromDate;
+const dayOffset = msOffset / 1000 / 60 / 60 / 24;
+const targetWord = targetWords[Math.floor(dayOffset)];
+
+startInteraction();
+
+function startInteraction() {
+  document.addEventListener("click", handleMouseClick);
+  document.addEventListener("keydown", handleKeyPress);
+}
+
+function stopInteraction() {
+  document.removeEventListener("click", handleMouseClick);
+  document.removeEventListener("keydown", handleKeyPress);
+}
+
+function handleMouseClick(e) {
+  if (e.target.matches("[data-key]")) {
+    pressKey(e.target.dataset.key);
+    return;
+  }
+
+  if (e.target.matches("[data-enter]")) {
+    submitGuess();
+    return;
+  }
+
+  if (e.target.matches("[data-delete]")) {
+    deleteKey();
+    return;
+  }
+}
+
+function handleKeyPress(e) {
+  if (e.key === "Enter") {
+    submitGuess();
+    return;
+  }
+
+  if (e.key === "Backspace" || e.key === "Delete") {
+    deleteKey();
+    return;
+  }
+
+  if (e.key.match(/^[a-z]$/)) {
+    pressKey(e.key);
+    return;
+  }
+}
+
+function pressKey(key) {
+  const activeTiles = getActiveTiles();
+  if (activeTiles.length >= WORD_LENGTH) return;
+  const nextTile = guessGrid.querySelector(":not([data-letter])");
+  nextTile.dataset.letter = key.toLowerCase();
+  nextTile.textContent = key;
+  nextTile.dataset.state = "active";
+}
+
+function deleteKey() {
+  const activeTiles = getActiveTiles();
+  const lastTile = activeTiles[activeTiles.length - 1];
+  if (lastTile == null) return;
+  lastTile.textContent = "";
+  delete lastTile.dataset.state;
+  delete lastTile.dataset.letter;
+}
+
+function submitGuess() {
+  const activeTiles = [...getActiveTiles()];
+  if (activeTiles.length !== WORD_LENGTH) {
+    showAlert("Not enough letters");
+    shakeTiles(activeTiles);
+    return;
+  }
+
+  const guess = activeTiles.reduce((word, tile) => {
+    return word + tile.dataset.letter;
+  }, "");
+
+  if (!dictionary.includes(guess)) {
+    showAlert("Not in word list");
+    shakeTiles(activeTiles);
+    return;
+  }
+
+  stopInteraction();
+  activeTiles.forEach((...params) => flipTile(...params, guess));
+}
+
+function flipTile(tile, index, array, guess) {
+  const letter = tile.dataset.letter;
+  const key = keyboard.querySelector(`[data-key="${letter}"i]`);
+  setTimeout(() => {
+    tile.classList.add("flip");
+  }, (index * FLIP_ANIMATION_DURATION) / 2);
+
+  tile.addEventListener(
+    "transitionend",
+    () => {
+      tile.classList.remove("flip");
+      if (targetWord[index] === letter) {
+        tile.dataset.state = "correct";
+        key.classList.add("correct");
+      } else if (targetWord.includes(letter)) {
+        tile.dataset.state = "wrong-location";
+        key.classList.add("wrong-location");
+      } else {
+        tile.dataset.state = "wrong";
+        key.classList.add("wrong");
+      }
+
+      if (index === array.length - 1) {
+        tile.addEventListener(
+          "transitionend",
+          () => {
+            startInteraction();
+            checkWinLose(guess, array);
+          },
+          { once: true }
+        );
+      }
+    },
+    { once: true }
+  );
+}
+
+function getActiveTiles() {
+  return guessGrid.querySelectorAll('[data-state="active"]');
+}
+
+function showAlert(message, duration = 1000) {
+  const alert = document.createElement("div");
+  alert.textContent = message;
+  alert.classList.add("alert");
+  alertContainer.prepend(alert);
+  if (duration == null) return;
 
   setTimeout(() => {
-    if (isWinner) {
-      alert('Congratulations!');
-    } else if (isGameOver) {
-      alert(`Better luck next time! The word was ${state.secret}.`);
-    }
-  }, 3 * animation_duration);
+    alert.classList.add("hide");
+    alert.addEventListener("transitionend", () => {
+      alert.remove();
+    });
+  }, duration);
 }
 
-function isLetter(key) {
-  return key.length === 1 && key.match(/[a-z]/i);
+function shakeTiles(tiles) {
+  tiles.forEach(tile => {
+    tile.classList.add("shake");
+    tile.addEventListener(
+      "animationend",
+      () => {
+        tile.classList.remove("shake");
+      },
+      { once: true }
+    );
+  });
 }
 
-function addLetter(letter) {
-  if (state.currentCol === 5) return;
-  state.grid[state.currentRow][state.currentCol] = letter;
-  state.currentCol++;
+function checkWinLose(guess, tiles) {
+  if (guess === targetWord) {
+    showAlert("You Win", 5000);
+    danceTiles(tiles);
+    stopInteraction();
+    return;
+  }
+
+  const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])");
+  if (remainingTiles.length === 0) {
+    showAlert(targetWord.toUpperCase(), null);
+    stopInteraction();
+  }
 }
 
-function removeLetter() {
-  if (state.currentCol === 0) return;
-  state.grid[state.currentRow][state.currentCol - 1] = '';
-  state.currentCol--;
+function danceTiles(tiles) {
+  tiles.forEach((tile, index) => {
+    setTimeout(() => {
+      tile.classList.add("dance");
+      tile.addEventListener(
+        "animationend",
+        () => {
+          tile.classList.remove("dance");
+        },
+        { once: true }
+      );
+    }, (index * DANCE_ANIMATION_DURATION) / 5);
+  });
 }
-
-function startup() {
-  const game = document.getElementById('game');
-  drawGrid(game);
-
-  registerKeyboardEvents();
-}
-
-startup();
