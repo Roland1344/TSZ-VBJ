@@ -313,3 +313,11 @@ h1 {
 .close-btn:hover::before{
   transform: scaleX(1);
 }
+#zöld{
+    color: hsl(115, 29%, 43%);
+    display: inline;
+}
+#sárga {
+    color: hsl(49, 51%, 47%);
+    display: inline;
+}
