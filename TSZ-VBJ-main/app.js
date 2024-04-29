@@ -62,7 +62,7 @@ const targetWords = [
     "rabbi",
     "rómeó",
     "sarok",
-    "si r",
+    "siker",
     "szent",
     "szumó",
     "tabló",
