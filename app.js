@@ -1,197 +1,383 @@
-import { WORDS } from "./dictionary.js";
-//szórandomizálás
-const NUMBER_OF_GUESSES = 6;
-let guessesRemaining = NUMBER_OF_GUESSES;
-let currentGuess = [];
-let nextLetter = 0;
-let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)]
-console.log(rightGuessString)
+const targetWords = [
+    "kékes",
+    "rétes",
+    "kutya",
+    "három",
+    "nyolc",
+    "agrár",
+    "melák",
+    "adhat",
+    "ajkai",
+    "ejnye",
+    "akkor",
+    "aljas",
+    "alibi",
+    "arcok",
+    "barát",
+    "bokor",
+    "cipős",
+    "cupák",
+    "csóró",
+    "csősz",
+    "dajka",
+    "dolog",
+    "dzsem",
+    "edény",
+    "ernyő",
+    "éjfél",
+    "éjjel",
+    "fabak",
+    "fluor",
+    "garat",
+    "gúnár",
+    "gyanu",
+    "győző",
+    "harag",
+    "héber",
+    "idény",
+    "itató",
+    "íjász",
+    "írnok",
+    "japán",
+    "jármű",
+    "kanál",
+    "kadét",
+    "kamat",
+    "latin",
+    "lagzi",
+    "magas",
+    "műsor",
+    "nőnap",
+    "nagyi",
+    "ostor",
+    "origó",
+    "óvónő",
+    "ócska",
+    "öngól",
+    "ördög",
+    "ősnép",
+    "ősapa",
+    "pacal",
+    "pengő",
+    "rabbi",
+    "rómeó",
+    "sarok",
+<<<<<<< HEAD
+=======
+    "siker",
+>>>>>>> 891eaa8db48a85c202528e5fe19182b501dc4a6c
+    "szent",
+    "szumó",
+    "tabló",
+    "teknő",
+    "udvar",
+    "unoka",
+    "úrbér",
+    "útzár",
+    "üdítő",
+    "ügyes",
+    "vadőr",
+    "vekni",
+    "vájog",
+    "webes",
+    "xenon",
+    "zárda",
+    "zebra",
+    "zsalu",
+    "zsidó",
+    "ytong",
+]
+const dictionary = [
+    "kékes",
+    "rétes",
+    "kutya",
+    "három",
+    "nyolc",
+    "agrár",
+    "melák",
+    "adhat",
+    "ajkai",
+    "ejnye",
+    "akkor",
+    "aljas",
+    "alibi",
+    "arcok",
+    "barát",
+    "bokor",
+    "cipős",
+    "cupák",
+    "csóró",
+    "csősz",
+    "dajka",
+    "dolog",
+    "dzsem",
+    "edény",
+    "ernyő",
+    "éjfél",
+    "éjjel",
+    "fabak",
+    "fluor",
+    "garat",
+    "gúnár",
+    "gyanu",
+    "győző",
+    "harag",
+    "héber",
+    "idény",
+    "itató",
+    "íjász",
+    "írnok",
+    "japán",
+    "jármű",
+    "kanál",
+    "kadét",
+    "kamat",
+    "latin",
+    "lagzi",
+    "magas",
+    "műsor",
+    "nőnap",
+    "nagyi",
+    "ostor",
+    "origó",
+    "óvónő",
+    "ócska",
+    "öngól",
+    "ördög",
+    "ősnép",
+    "ősapa",
+    "pacal",
+    "pengő",
+    "rabbi",
+    "rómeó",
+    "sarok",
+    "siker",
+    "szent",
+    "szumó",
+    "tabló",
+    "teknő",
+    "udvar",
+    "unoka",
+    "úrbér",
+    "útzár",
+    "üdítő",
+    "ügyes",
+    "vadőr",
+    "vekni",
+    "vájog",
+    "webes",
+    "xenon",
+    "zárda",
+    "zebra",
+    "zsalu",
+    "zsidó",
+    "ytong",
+]
+  const WORD_LENGTH = 5
+  const FLIP_ANIMATION_DURATION = 500
+  const DANCE_ANIMATION_DURATION = 500
+  const keyboard = document.querySelector("[data-keyboard]")
+  const alertContainer = document.querySelector("[data-alert-container]")
+  const guessGrid = document.querySelector("[data-guess-grid]")
+  const randomIndex = Math.floor(Math.random() * targetWords.length);
+  const targetWord = targetWords[randomIndex];
+  
+  startInteraction()
+  
+  function startInteraction() {
+    document.addEventListener("click", handleMouseClick)
+    document.addEventListener("keydown", handleKeyPress)
+  }
+  
+  function stopInteraction() {
+    document.removeEventListener("click", handleMouseClick)
+    document.removeEventListener("keydown", handleKeyPress)
+  }
+  
+  function handleMouseClick(e) {
+    if (e.target.matches("[data-key]")) {
+      pressKey(e.target.dataset.key)
+      return
+    }
+  
+    if (e.target.matches("[data-enter]")) {
+      submitGuess()
+      return
+    }
+  
+    if (e.target.matches("[data-delete]")) {
+      deleteKey()
+      return
+    }
+  }
+  
+  function handleKeyPress(e) {
+    if (e.key === "Enter") {
+        submitGuess();
+        return;
+    }
 
-//Tábla építése
-function initBoard() {
-    let board = document.getElementById("game-board");
+    if (e.key === "Backspace" || e.key === "Delete") {
+        deleteKey();
+        return;
+    }
 
-    for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
-        let row = document.createElement("div")
-        row.className = "letter-row"
-        
-        for (let j = 0; j < 3; j++) {
-            let box = document.createElement("div")
-            box.className = "letter-box"
-            row.appendChild(box)
-        }
 
-        board.appendChild(row)
+    if (e.key.match(/^[a-záéíóöőúüű]$/i)) {
+        pressKey(e.key);
+        return;
     }
 }
 
-initBoard()
-
-//billenytűlenyomás
-document.addEventListener("keyup", (e) => {
-
-    if (guessesRemaining === 0) {
-        return
+  
+  function pressKey(key) {
+    const activeTiles = getActiveTiles()
+    if (activeTiles.length >= WORD_LENGTH) return
+    const nextTile = guessGrid.querySelector(":not([data-letter])")
+    nextTile.dataset.letter = key.toLowerCase()
+    nextTile.textContent = key
+    nextTile.dataset.state = "active"
+  }
+  
+  function deleteKey() {
+    const activeTiles = getActiveTiles();
+    const lastTile = activeTiles[activeTiles.length - 1];
+    if (lastTile == null) return;
+    lastTile.textContent = "";
+    lastTile.removeAttribute("data-state");
+    lastTile.removeAttribute("data-letter");
+  }
+  
+  function submitGuess() {
+    const activeTiles = [...getActiveTiles()]
+    if (activeTiles.length !== WORD_LENGTH) {
+      showAlert("Kevés betűt adott meg!")
+      shakeTiles(activeTiles)
+      return
     }
-
-    let pressedKey = String(e.key)
-    if (pressedKey === "Backspace" && nextLetter !== 0) {
-        deleteLetter()
-        return
+  
+    const guess = activeTiles.reduce((word, tile) => {
+      return word + tile.dataset.letter
+    }, "")
+  
+    if (!dictionary.includes(guess)) {
+      showAlert("Nincs ilyen szó az adatbázisban!")
+      shakeTiles(activeTiles)
+      return
     }
-
-    if (pressedKey === "Enter") {
-        checkGuess()
-        return
-    }
-
-    let found = pressedKey.match(/[a-z]/gi)
-    if (!found || found.length > 1) {
-        return
-    } else {
-        insertLetter(pressedKey)
-    }
-})
-
-//van e elég hely, berakja a jó helyre
-function insertLetter (pressedKey) {
-    if (nextLetter === 5) {
-        return
-    }
-    pressedKey = pressedKey.toLowerCase()
-    animateCSS(box, "pulse")
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
-    let box = row.children[nextLetter]
-    box.textContent = pressedKey
-    box.classList.add("filled-box")
-    currentGuess.push(pressedKey)
-    nextLetter += 1
-}
-//kitörli a sor első betűjét
-function deleteLetter () {
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
-    let box = row.children[nextLetter - 1]
-    box.textContent = ""
-    box.classList.remove("filled-box")
-    currentGuess.pop()
-    nextLetter -= 1
-}
-
-//
-function checkGuess () {
-    let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining]
-    let guessString = ''
-    let rightGuess = Array.from(rightGuessString)
-
-    for (const val of currentGuess) {
-        guessString += val
-    }
-
-    if (guessString.length != 3) {
-        alert("Not enough letters!")
-        return
-    }
-
-    if (!WORDS.includes(guessString)) {
-        alert("Word not in list!")
-        return
-    }
-
-    
-    for (let i = 0; i < 3; i++) {
-        let letterColor = ''
-        let box = row.children[i]
-        let letter = currentGuess[i]
-        
-        let letterPosition = rightGuess.indexOf(currentGuess[i])
-        // helyes betű a tippben
-        if (letterPosition === -1) {
-            letterColor = 'grey'
+  
+    stopInteraction()
+    activeTiles.forEach((...params) => flipTile(...params, guess))
+  }
+  
+  function flipTile(tile, index, array, guess) {
+    const letter = tile.dataset.letter
+    const key = keyboard.querySelector(`[data-key="${letter}"i]`)
+    setTimeout(() => {
+      tile.classList.add("flip")
+    }, (index * FLIP_ANIMATION_DURATION) / 2)
+  
+    tile.addEventListener(
+      "transitionend",
+      () => {
+        tile.classList.remove("flip")
+        if (targetWord[index] === letter) {
+          tile.dataset.state = "correct"
+          key.classList.add("correct")
+        } else if (targetWord.includes(letter)) {
+          tile.dataset.state = "wrong-location"
+          key.classList.add("wrong-location")
         } else {
-            // bennevan már és jó helyen van akkor zöld
-            if (currentGuess[i] === rightGuess[i]) { 
-                letterColor = 'green'
-            } else {
-                // bennevan de rossz helyen akkor sárga
-                letterColor = 'yellow'
-            }
-
-            rightGuess[letterPosition] = "#"
+          tile.dataset.state = "wrong"
+          key.classList.add("wrong")
         }
-
-        let delay = 250 * i
-        setTimeout(()=> {
-            //szinez
-            animateCSS(box, "pulse")
-            box.style.backgroundColor = letterColor
-            shadeKeyBoard(letter, letterColor)
-        }, delay)
-    }
-
-    if (guessString === rightGuessString) {
-        alert("Kitaláltad, vége a játéknak")
-        guessesRemaining = 0
-        return
-    } else {
-        guessesRemaining -= 1;
-        currentGuess = [];
-        nextLetter = 0;
-
-        if (guessesRemaining === 0) {
-            alert("Kifogytál a próbálkozásokból")
-            alert(`A keresett szó: "${rightGuessString}"`)
+  
+        if (index === array.length - 1) {
+          tile.addEventListener(
+            "transitionend",
+            () => {
+              startInteraction()
+              checkWinLose(guess, array)
+            },
+            { once: true }
+          )
         }
+      },
+      { once: true }
+    )
+  }
+  
+  function getActiveTiles() {
+    return guessGrid.querySelectorAll('[data-state="active"]')
+  }
+  
+  function showAlert(message, duration = 1000) {
+    const alert = document.createElement("div")
+    alert.textContent = message
+    alert.classList.add("alert")
+    alertContainer.prepend(alert)
+    if (duration == null) return
+  
+    setTimeout(() => {
+      alert.classList.add("hide")
+      alert.addEventListener("transitionend", () => {
+        alert.remove()
+      })
+    }, duration)
+  }
+  
+  function shakeTiles(tiles) {
+    tiles.forEach(tile => {
+      tile.classList.add("shake")
+      tile.addEventListener(
+        "animationend",
+        () => {
+          tile.classList.remove("shake")
+        },
+        { once: true }
+      )
+    })
+  }
+  
+  function checkWinLose(guess, tiles) {
+    if (guess === targetWord) {
+      showAlert("Nyertél, gratulálok!", 5000)
+      danceTiles(tiles)
+      stopInteraction()
+      return
     }
+  
+    const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
+    if (remainingTiles.length === 0) {
+      showAlert(targetWord.toUpperCase(), null)
+      stopInteraction()
+    }
+  }
+  
+  function danceTiles(tiles) {
+    tiles.forEach((tile, index) => {
+      setTimeout(() => {
+        tile.classList.add("dance")
+        tile.addEventListener(
+          "animationend",
+          () => {
+            tile.classList.remove("dance")
+          },
+          { once: true }
+        )
+      }, (index * DANCE_ANIMATION_DURATION) / 5)
+    })
+  } 
+
+
+const showPopup = document.querySelector('.show-popup');
+const popupContainer = document.querySelector('.popup-container');
+const closeBtn = document.querySelector('.close-btn');
+
+showPopup.onclick = () => {
+  popupContainer.classList.add('active');
 }
-function shadeKeyBoard(letter, color) {
-    for (const elem of document.getElementsByClassName("keyboard-button")) {
-        if (elem.textContent === letter) {
-            let oldColor = elem.style.backgroundColor
-            if (oldColor === 'green') {
-                return
-            } 
 
-            if (oldColor === 'yellow' && color !== 'green') {
-                return
-            }
-
-            elem.style.backgroundColor = color
-            break
-        }
-    }
+closeBtn.onclick = () => {
+  popupContainer.classList.remove('active');
 }
-
-//képernyő billentyűzet bevitele
-document.getElementById("keyboard-cont").addEventListener("click", (e) => {
-    const target = e.target
-    
-    if (!target.classList.contains("keyboard-button")) {
-        return
-    }
-    let key = target.textContent
-
-    if (key === "Del") {
-        key = "Backspace"
-    } 
-
-    document.dispatchEvent(new KeyboardEvent("keyup", {'key': key}))
-})
-
-
-//animáció
-const animateCSS = (element, animation, prefix = 'animate__') =>
-  new Promise((resolve, reject) => {
-    const animationName = `${prefix}${animation}`;
-    const node = element
-    node.style.setProperty('--animate-duration', '0.3s');
-    
-    node.classList.add(`${prefix}animated`, animationName);
-
-    function handleAnimationEnd(event) {
-      event.stopPropagation();
-      node.classList.remove(`${prefix}animated`, animationName);
-      resolve('Animation ended');
-    }
-
-    node.addEventListener('animationend', handleAnimationEnd, {once: true});
-});

@@ -2,104 +2,106 @@
 <html lang="hu">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="app.js" defer></script>
-    <title>Wordle</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="app2.js" defer></script>
+  <title>Wordle</title>
 </head>
 
 <body>
-    <h1>Wordle</h1>
-    <div id="game">
-        <div class="grid">
-            <!--Ha át akarjuk majd szinezni a boxot akkor az adott "box empty" nél kell átirni az empty-t
-            Ha jó akkor "right" ha rossz helyen van akkor "miss"-->
-            <div class="box empty"><input type="text" id="box1" maxlength="1" onkeyup="moveToNext(this, 'box2')"></div>
-            <div class="box empty"><input type="text" id="box2" maxlength="1" onkeyup="moveToNext(this, 'box3')"></div>
-            <div class="box empty"><input type="text" id="box3" maxlength="1"></div>
-        </div>
-        <div class="grid">
-            <div class="box empty"><input type="text" id="box4" maxlength="1" onkeyup="moveToNext(this, 'box2')"></div>
-            <div class="box empty"><input type="text" id="box5" maxlength="1" onkeyup="moveToNext(this, 'box3')"></div>
-            <div class="box empty"><input type="text" id="box6" maxlength="1"></div>
-        </div>
-        <div class="grid">
-            <div class="box empty"><input type="text" id="box7" maxlength="1" onkeyup="moveToNext(this, 'box2')"></div>
-            <div class="box empty"><input type="text" id="box8" maxlength="1" onkeyup="moveToNext(this, 'box3')"></div>
-            <div class="box empty"><input type="text" id="box9" maxlength="1"></div>
-        </div>
-        <div class="grid">
-            <div class="box empty"><input type="text" id="box10" maxlength="1" onkeyup="moveToNext(this, 'box2')"></div>
-            <div class="box empty"><input type="text" id="box11" maxlength="1" onkeyup="moveToNext(this, 'box3')"></div>
-            <div class="box empty"><input type="text" id="box12" maxlength="1"></div>
-        </div>
-        <div class="grid">
-            <div class="box empty"><input type="text" id="box13" maxlength="1" onkeyup="moveToNext(this, 'box2')"></div>
-            <div class="box empty"><input type="text" id="box14" maxlength="1" onkeyup="moveToNext(this, 'box3')"></div>
-            <div class="box empty"><input type="text" id="box15" maxlength="1"></div>
-        </div>
-        <div class="grid">
-            <div class="box empty"><input type="text" id="box16" maxlength="1" onkeyup="moveToNext(this, 'box2')"></div>
-            <div class="box empty"><input type="text" id="box17" maxlength="1" onkeyup="moveToNext(this, 'box3')"></div>
-            <div class="box empty"><input type="text" id="box18" maxlength="1"></div>
-        </div>
-       
-    </div>
-    <div class="buttons">
-        <button class="btn ellenorzes">Ellenőrzés</button>
-        <button class="btn kovetkezo">Következő</button>
-    </div>
-    <div id="keyboard-cont">
-        <div class="first-row">
-            <button class="keyboard-button">q</button>
-            <button class="keyboard-button">w</button>
-            <button class="keyboard-button">e</button>
-            <button class="keyboard-button">r</button>
-            <button class="keyboard-button">t</button>
-            <button class="keyboard-button">z</button>
-            <button class="keyboard-button">u</button>
-            <button class="keyboard-button">i</button>
-            <button class="keyboard-button">o</button>
-            <button class="keyboard-button">p</button>
-            <button class="keyboard-button">ő</button>
-            <button class="keyboard-button">ú</button>
-            <button class="keyboard-button">ö</button>
-            <button class="keyboard-button">ü</button>
+  <h1>Wordle</h1>
 
+  <div class="alert-container" data-alert-container></div>
+  <div data-guess-grid class="guess-grid">
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+    <div class="tile"></div>
+  </div>
+  <div data-keyboard class="keyboard">
+    <button class="key" data-key="Q">Q</button>
+    <button class="key" data-key="W">W</button>
+    <button class="key" data-key="E">E</button>
+    <button class="key" data-key="R">R</button>
+    <button class="key" data-key="T">T</button>
+    <button class="key" data-key="Z">Z</button>
+    <button class="key" data-key="U">U</button>
+    <button class="key" data-key="I">I</button>
+    <button class="key" data-key="O">O</button>
+    <button class="key" data-key="P">P</button>
+    <button class="key" data-key="Ő">Ő</button>
+    <button class="key" data-key="Ú">Ú</button>
+    <button data-delete class="key large">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path fill="var(--color-tone-1)"
+          d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z">
+        </path>
+      </svg>
+    </button>
+    <div class="space"></div>
+    <button class="key" data-key="A">A</button>
+    <button class="key" data-key="S">S</button>
+    <button class="key" data-key="D">D</button>
+    <button class="key" data-key="F">F</button>
+    <button class="key" data-key="G">G</button>
+    <button class="key" data-key="H">H</button>
+    <button class="key" data-key="J">J</button>
+    <button class="key" data-key="K">K</button>
+    <button class="key" data-key="L">L</button>
+    <button class="key" data-key="É">É</button>
+    <button class="key" data-key="Á">Á</button>
+    <button class="key" data-key="Ű">Ű</button>
+    <button data-enter class="key large">Enter</button>
+    <div class="space"></div>
 
-        </div>
-        <div class="second-row">
-            <button class="keyboard-button">a</button>
-            <button class="keyboard-button">s</button>
-            <button class="keyboard-button">d</button>
-            <button class="keyboard-button">f</button>
-            <button class="keyboard-button">g</button>
-            <button class="keyboard-button">h</button>
-            <button class="keyboard-button">j</button>
-            <button class="keyboard-button">k</button>
-            <button class="keyboard-button">l</button>
-            <button class="keyboard-button">é</button>
-            <button class="keyboard-button">á</button>
-            <button class="keyboard-button">ű</button>
-            <button class="keyboard-button">ó</button>
-        </div>
-        <div class="third-row">
-            <button class="keyboard-button">í</button>
-            <button class="keyboard-button">y</button>
-            <button class="keyboard-button">x</button>
-            <button class="keyboard-button">c</button>
-            <button class="keyboard-button">v</button>
-            <button class="keyboard-button">b</button>
-            <button class="keyboard-button">n</button>
-            <button class="keyboard-button">m</button>
-        </div>
-        <div class="fourth-row">
-            <button class="keyboard-button">Backspace</button>
-        </div>
+    <button class="key" data-key="Í">Í</button>
+    <button class="key" data-key="Y">Y</button>
+    <button class="key" data-key="X">X</button>
+    <button class="key" data-key="C">C</button>
+    <button class="key" data-key="V">V</button>
+    <button class="key" data-key="B">B</button>
+    <button class="key" data-key="N">N</button>
+    <button class="key" data-key="M">M</button>
+    <button class="key" data-key="Ö">Ö</button>
+    <button class="key" data-key="Ü">Ü</button>
+    <button class="key" data-key="Ó">Ó</button>
+    <button class="key large show-popup">Help</button>
+  </div>
+  <div class="popup-container">
+    <div class="popup-box">
+      <h2>Üdvözöllek a kitalálók szurdokában</h2>
+      <p>Ez egy egyszerű játék, amelyben öt betűből álló rejtett szót kell kitalálnod hat próbálkozásod alatt. Minden próbálkozás után a játék visszajelzést ad, hogy az adott betű szerepel-e a keresett szóban, és ha igen, hogy hol helyezkedik el. A cél az, hogy minél kevesebb próbálkozásból megtaláld a rejtett szót.</p>
+      <button class="btn close-btn">Kezdjük!</button>
     </div>
-    
-
+  </div>
 </body>
 
 </html>
