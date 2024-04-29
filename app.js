@@ -1,9 +1,11 @@
+//ezen szavak közül válogat a program, ezeket kell kitalálni
 const targetWords = [
     "kutya",
     "bokor",
     "dajka",
     "garat",
 ]
+//ide jönnek azok az értelmes szavak amelyeket megadhat a felhasználó a találgatáshoz
 const dictionary = [
     "kutya",
     "bokor",
@@ -19,21 +21,25 @@ const dictionary = [
   const keyboard = document.querySelector("[data-keyboard]")
   const alertContainer = document.querySelector("[data-alert-container]")
   const guessGrid = document.querySelector("[data-guess-grid]")
+  //random szó kiválasztása a tömbből
   const randomIndex = Math.floor(Math.random() * targetWords.length);
   const targetWord = targetWords[randomIndex];
   
   startInteraction()
-  
+
+  //elkezdi figyelni
   function startInteraction() {
     document.addEventListener("click", handleMouseClick)
     document.addEventListener("keydown", handleKeyPress)
   }
-  
+
+  //leállítja a figyelés
   function stopInteraction() {
     document.removeEventListener("click", handleMouseClick)
     document.removeEventListener("keydown", handleKeyPress)
   }
   
+  //kattintás figyelő és elosztó úgymond
   function handleMouseClick(e) {
     if (e.target.matches("[data-key]")) {
       pressKey(e.target.dataset.key)
@@ -50,7 +56,8 @@ const dictionary = [
       return
     }
   }
-  
+
+  //billentyű figyelő és szortírozó
   function handleKeyPress(e) {
     if (e.key === "Enter") {
         submitGuess();
@@ -69,7 +76,7 @@ const dictionary = [
     }
 }
 
-  
+  //ha van szabad hely beirja a leütött karaktert  
   function pressKey(key) {
     const activeTiles = getActiveTiles()
     if (activeTiles.length >= WORD_LENGTH) return
@@ -79,6 +86,7 @@ const dictionary = [
     nextTile.dataset.state = "active"
   }
   
+  //törlőgomb
   function deleteKey() {
     const activeTiles = getActiveTiles();
     const lastTile = activeTiles[activeTiles.length - 1];
@@ -88,6 +96,7 @@ const dictionary = [
     lastTile.removeAttribute("data-letter");
   }
   
+  //ellenőrzi, hogy elég szó van e, ha igen akkor ellenőrzi hogy az adott szó benne van e a szótárban.
   function submitGuess() {
     const activeTiles = [...getActiveTiles()]
     if (activeTiles.length !== WORD_LENGTH) {
@@ -111,8 +120,11 @@ const dictionary = [
   }
   
   function flipTile(tile, index, array, guess) {
+    //lekérjük az adott box betűjét
     const letter = tile.dataset.letter
+    //megkeresi a billentyűzeten is a betűt
     const key = keyboard.querySelector(`[data-key="${letter}"i]`)
+    //fordulás
     setTimeout(() => {
       tile.classList.add("flip")
     }, (index * FLIP_ANIMATION_DURATION) / 2)
@@ -120,23 +132,29 @@ const dictionary = [
     tile.addEventListener(
       "transitionend",
       () => {
+        //eltávolítjuk a flippet
         tile.classList.remove("flip")
         if (targetWord[index] === letter) {
+            //jó helyen van
           tile.dataset.state = "correct"
           key.classList.add("correct")
         } else if (targetWord.includes(letter)) {
+            //rossz helyen van
           tile.dataset.state = "wrong-location"
           key.classList.add("wrong-location")
         } else {
+            //nincs benne
           tile.dataset.state = "wrong"
           key.classList.add("wrong")
         }
-  
+         //utcsó
         if (index === array.length - 1) {
           tile.addEventListener(
             "transitionend",
             () => {
+                //ujra interakt
               startInteraction()
+              //megnézzük hogy nyert-e
               checkWinLose(guess, array)
             },
             { once: true }
@@ -147,17 +165,19 @@ const dictionary = [
     )
   }
   
+  //aktív boxokat adja vissza
   function getActiveTiles() {
     return guessGrid.querySelectorAll('[data-state="active"]')
   }
-  
+
+  //allert generáló
   function showAlert(message, duration = 1000) {
     const alert = document.createElement("div")
     alert.textContent = message
     alert.classList.add("alert")
     alertContainer.prepend(alert)
     if (duration == null) return
-  
+  //időzített eltűnés
     setTimeout(() => {
       alert.classList.add("hide")
       alert.addEventListener("transitionend", () => {
@@ -165,7 +185,7 @@ const dictionary = [
       })
     }, duration)
   }
-  
+  //megrázza a kockákat, rárakja a classlistet
   function shakeTiles(tiles) {
     tiles.forEach(tile => {
       tile.classList.add("shake")
@@ -178,7 +198,7 @@ const dictionary = [
       )
     })
   }
-  
+  //W allert
   function checkWinLose(guess, tiles) {
     if (guess === targetWord) {
       showAlert("Nyertél, gratulálok!", 5000)
@@ -186,14 +206,14 @@ const dictionary = [
       stopInteraction()
       return
     }
-  
+  //ha nem sikerül kitalálni megmutatja a keresett szót és leállítja az interaktálást
     const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
     if (remainingTiles.length === 0) {
       showAlert(targetWord.toUpperCase(), null)
       stopInteraction()
     }
   }
-  
+  //boxok "tánc" animációjának hozzáadása
   function danceTiles(tiles) {
     tiles.forEach((tile, index) => {
       setTimeout(() => {
@@ -210,10 +230,11 @@ const dictionary = [
   } 
 
   
+//felugró ablakhoz szükséges definiálások
 const showPopup = document.querySelector('.show-popup');
 const popupContainer = document.querySelector('.popup-container');
 const closeBtn = document.querySelector('.close-btn');
-
+//ha helpre kattint jelenle meg, ha bezárja tünjön el
 showPopup.onclick = () => {
   popupContainer.classList.add('active');
 }
